@@ -1,6 +1,6 @@
 <?php
 
-namespace floor12\simple_content\models;
+namespace floor12\single_content\models;
 
 use Yii;
 use yii\caching\TagDependency;

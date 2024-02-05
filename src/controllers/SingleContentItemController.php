@@ -1,10 +1,10 @@
 <?php
 
-namespace floor12\simple_content\controllers;
+namespace floor12\single_content\controllers;
 
-use app\models\entity\SingleContentItem;
 use app\models\enum\Role;
 use floor12\editmodal\EditModalAction;
+use floor12\single_content\models\SingleContentItem;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -13,13 +13,14 @@ class SingleContentItemController extends Controller
 {
     public function behaviors(): array
     {
+        $role = \Yii::$app->getModule('single_content')->administratorRoleName;
         return [
             'access' => [
                 'class' => AccessControl::class,
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => [\Yii::$app->getModule('simple_content')->administratorRoleName
+                        'roles' => [$role]
                         ],
                     ],
                 ],
