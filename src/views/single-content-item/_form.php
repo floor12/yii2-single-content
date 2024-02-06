@@ -19,17 +19,7 @@ $form = ActiveForm::begin([
     <div class='modal-body not-animated-label'>
         <?= $form->field($model, 'content')
             ->label(false)
-            ->widget(
-                CodemirrorWidget::className(),
-                [
-                    'preset' => 'html',
-                    'settings' => [
-                        'lineNumbers' => true,
-                    ],
-                    'options' => ['rows' => 30, 'autofocus' => true],
-
-                ]
-            ) ?>
+            ->textarea(['rows' => 10,]); ?>
     </div>
 
     <div class='modal-footer'>

@@ -24,6 +24,7 @@ class SingleContentItemWidget extends Widget
             $content = Html::tag('span', $content, [
                 'class' => 'single-content-item-content',
                 'data-id' => $this->id,
+                'style' => 'cursor: pointer;',
                 'onclick' => EditModalHelper::showForm('/single_content/single-content-item/form', ['id' => $this->id])
             ]);
         }
