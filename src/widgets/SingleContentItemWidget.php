@@ -2,6 +2,7 @@
 
 namespace floor12\single_content\widgets;
 
+use floor12\editmodal\EditModalAsset;
 use floor12\editmodal\EditModalHelper;
 use floor12\files\components\PictureWidget;
 use floor12\files\models\File;
@@ -20,6 +21,7 @@ class SingleContentItemWidget extends Widget
             $content = 'empy content';
         $role = \Yii::$app->getModule('single_content')->administratorRoleName;
         if (!\Yii::$app->user->isGuest && ($role == '@' || Yii::$app->user->can($role))) {
+            EditModalAsset::register($this->getView());
             $content = Html::tag('span', $content, [
                 'class' => 'single-content-item-content',
                 'data-id' => $this->id,
