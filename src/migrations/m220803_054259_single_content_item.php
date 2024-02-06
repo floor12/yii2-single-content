@@ -25,7 +25,7 @@ class m220803_054259_single_content_item extends Migration
 
     }
 
-    /**
+     /**
      * {@inheritdoc}
      */
     public function safeDown()
