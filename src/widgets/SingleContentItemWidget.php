@@ -2,7 +2,6 @@
 
 namespace floor12\single_content\widgets;
 
-use app\models\enum\Role;
 use floor12\editmodal\EditModalHelper;
 use floor12\files\components\PictureWidget;
 use floor12\files\models\File;
@@ -18,9 +17,9 @@ class SingleContentItemWidget extends Widget
     {
         $content = strval(SingleContentItem::get($this->id));
         if (!$content)
-            $content = 'нет контента';
+            $content = 'empy content';
         $role = \Yii::$app->getModule('single_content')->administratorRoleName;
-        if ($role == '@' || Yii::$app->user->can($role)) {
+        if (!\Yii::$app->user->isGuest && ($role == '@' || Yii::$app->user->can($role))) {
             $content = Html::tag('span', $content, [
                 'class' => 'single-content-item-content',
                 'data-id' => $this->id,
