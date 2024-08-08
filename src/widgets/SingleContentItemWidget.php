@@ -20,7 +20,7 @@ class SingleContentItemWidget extends Widget
         if (!$content)
             $content = 'empy content';
         $role = \Yii::$app->getModule('single_content')->administratorRoleName;
-        if (!\Yii::$app->user->isGuest && ($role == '@' || Yii::$app->user->can($role))) {
+        if (!\Yii::$app->user->isGuest && ($role == '@' || \Yii::$app->user->can($role))) {
             EditModalAsset::register($this->getView());
             $content = Html::tag('span', $content, [
                 'class' => 'single-content-item-content',
