@@ -80,7 +80,10 @@ class SingleContentItem extends ActiveRecord
     {
         return [
             'yii\behaviors\TimestampBehavior',
-            'yii\behaviors\BlameableBehavior',
+            [
+                'class' => 'yii\behaviors\BlameableBehavior',
+                'defaultValue' => 1
+            ],
         ];
     }
 }
