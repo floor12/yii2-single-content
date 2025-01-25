@@ -2,6 +2,7 @@
 
 namespace floor12\single_content\models;
 
+use floor12\files\components\FileBehaviour;
 use Yii;
 use yii\caching\TagDependency;
 use yii\db\ActiveQuery;
@@ -16,6 +17,9 @@ use yii\db\ActiveRecord;
  * @property string $updated_at [integer]
  * @property string $created_by [integer]
  * @property string $updated_by [integer]
+ * @property int $type_id
+ * @property File $image
+ * @property Files[] $images
  */
 class SingleContentItem extends ActiveRecord
 {
@@ -31,7 +35,11 @@ class SingleContentItem extends ActiveRecord
     public function rules(): array
     {
         return [
-            [['id', 'content',], 'required'],
+            [['key'], 'required'],
+            [['content', 'key'], 'string'],
+            [['type_id'], 'integer'],
+            ['images', 'file', 'maxFiles' => 10, 'extensions' => 'jpg, jpeg, webm, png, gif'],
+            ['image', 'file', 'maxFiles' => 1, 'extensions' => 'jpg, jpeg, webm, png, gif'],
         ];
     }
 
@@ -61,19 +69,18 @@ class SingleContentItem extends ActiveRecord
     /**
      * @throws \Exception
      */
-    public static function get(string $settingName): float|array|string|null
+    public static function get(string $elementKey, $type_id = ContentType::TEXT): self
     {
-
-        $settings = \Yii::$app->cache->getOrSet(self::CACHE_TAG, function () {
-            return self::find()->indexBy('id')->all();
+        $content = \Yii::$app->cache->getOrSet(self::CACHE_TAG, function () {
+            return self::find()->indexBy('key')->all();
         }, 0, new TagDependency(['tags' => [self::CACHE_TAG]]));
 
-        if (isset($settings[$settingName])) {
-            return $settings[$settingName]->content;
+        if (isset($content[$elementKey])) {
+            return $content[$elementKey];
         }
-        $model = new self(['id' => $settingName, 'content' => 'empty block']);
+        $model = new self(['key' => $elementKey, 'content' => 'empty block', 'type_id' => $type_id]);
         $model->save();
-        return '';
+        return $model;
     }
 
     public function behaviors(): array
@@ -84,6 +91,10 @@ class SingleContentItem extends ActiveRecord
                 'class' => 'yii\behaviors\BlameableBehavior',
                 'defaultValue' => 1
             ],
+            'files' => [
+                'class' => FileBehaviour::class,
+                'attributes' => ['images', 'image'],
+            ]
         ];
     }
 }

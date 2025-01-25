@@ -15,11 +15,17 @@ $form = ActiveForm::begin([
     'enableClientValidation' => true,
 ]); ?>
 
-
     <div class='modal-body not-animated-label'>
-        <?= $form->field($model, 'content')
-            ->label(false)
-            ->textarea(['rows' => 10,]); ?>
+
+        <?php if ($model->type_id == \floor12\single_content\models\ContentType::TEXT): ?>
+            <?= $form->field($model, 'content')
+                ->label(false)
+                ->textarea(['rows' => 10,]); ?>
+        <?php else: ?>
+            <?= $form->field($model, 'image')
+                ->label(false)
+                ->widget(\floor12\files\components\FileInputWidget::class); ?>
+        <?php endif; ?>
     </div>
 
     <div class='modal-footer'>
